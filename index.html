@@ -6,7 +6,7 @@
 <title>JoMama's Blues — In Memory of Johanna Hamel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Playfair+Display:wght@600&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --ink: #1C1410;
@@ -121,7 +121,35 @@
   #gate button:hover { background: var(--rust-deep); }
   #gate button:focus-visible, #gate input:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
-  #gate-error {
+  .gate-input-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  .gate-input-wrap input {
+    width: 100%;
+    padding-right: 36px;
+  }
+
+  .gate-eye {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: 1px solid rgba(180, 140, 100, 0.35);
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 3px 5px;
+    color: rgba(242,232,213,0.3);
+    transition: color 0.2s ease, border-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    margin-top: 0 !important;
+  }
+
+  .gate-eye:hover { color: rgba(242,232,213,0.6); border-color: rgba(180,140,100,0.6); background: none !important; }
+  .gate-eye svg { width: 15px; height: 15px; }
     margin-top: 16px;
     font-size: 0.85rem;
     color: var(--rust);
@@ -221,6 +249,7 @@
   .eyebrow .dot { color: var(--sage); margin: 0 8px; }
 
   h1.hero-title {
+    font-family: 'Playfair Display', serif;
     font-size: clamp(3rem, 9vw, 5.2rem);
     line-height: 0.95;
     font-weight: 600;
@@ -325,7 +354,42 @@
     margin-top: 6px;
   }
 
-  .empty-note {
+  .random-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 28px;
+    background: none;
+    border: 1.5px solid var(--line);
+    color: var(--ink-soft);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px 18px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .random-btn:hover {
+    border-color: var(--rust);
+    color: var(--rust-deep);
+  }
+
+  .random-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  #random-now-playing {
+    margin-top: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--rust-deep);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    min-height: 1.2em;
+  }
+
+  #random-now-playing.visible { opacity: 1; }
     padding: 40px 0;
     color: var(--ink-soft);
     opacity: 0.6;
@@ -421,7 +485,15 @@
       <h1 class="display">JoMama's Blues</h1>
       <p class="sub mono">a family archive</p>
       <form id="gate-form" autocomplete="off">
-        <input type="password" id="gate-input" placeholder="Password" autocomplete="off" />
+        <div class="gate-input-wrap">
+          <input type="password" id="gate-input" placeholder="Password" autocomplete="off" />
+          <button type="button" class="gate-eye" id="gate-eye-btn" aria-label="Show password">
+            <svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
         <div id="gate-error"></div>
         <button type="submit">Enter</button>
       </form>
@@ -456,10 +528,19 @@
           <p class="eyebrow">KMUD 91.1 FM <span class="dot">·</span> HUMBOLDT COUNTY <span class="dot">·</span> LONGEST-RUNNING BLUES SHOW WEST OF CHICAGO</p>
           <p class="hero-dates mono" style="margin-bottom: 20px;">RECORDED LIVE ON KMUD · ARCHIVED HERE FOR FAMILY &amp; FRIENDS</p>
           <h1 class="hero-title display">JoMama's<br>Blues</h1>
-          <p class="hero-sub">Johanna Hamel hosted this show on KMUD every Sunday night for thirty-five years — 1987 to 2022 and beyond. These are some of those recordings. Her voice, her playlists, her radio home.</p>
+          <p class="hero-sub">Johanna Hamel hosted this show on KMUD every Sunday night for 35+ years, playing classic blues, modern blues, and always supporting up-and-comers to keep the blues alive. It was a weekly ritual for fans in Humboldt County and around the world.</p>
         </div>
 
         <p class="section-label">Recordings</p>
+
+        <button class="random-btn" id="random-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 3 21 3 21 8"/><polyline points="4 20 9 20 9 15"/>
+            <path d="M21 3l-7 7-4-4-6 6"/><path d="M15 20l6-6-4-4"/>
+          </svg>
+          Play a random show
+        </button>
+        <div id="random-now-playing"></div>
 
         <div id="tracklist">
           <!-- Tracks are generated from the TRACKS array below -->
@@ -504,9 +585,99 @@
   const TRACKS = [
     {
       title: "JoMama's Blues",
-      note: "An evening on KMUD — full episode.",
+      note: "Live on KMUD.",
+      date: "JUL 1, 2012",
+      url: "https://archive.org/download/jomamasbluesmisc/kmud_120701_210000jomama1.mp3"
+    },
+    {
+      title: "JoMama's Blues (pt. 2)",
+      note: "Live on KMUD.",
+      date: "JUL 1, 2012",
+      url: "https://archive.org/download/jomamasbluesmisc/kmud_120701_220000jomama2.mp3"
+    },
+    {
+      title: "JoMama's Blues",
+      note: "Live on KMUD.",
+      date: "JUL 8, 2012",
+      url: "https://archive.org/download/jomamasbluesmisc/kmud_120708_210000jomama1.mp3"
+    },
+    {
+      title: "JoMama's Blues (pt. 2)",
+      note: "Live on KMUD.",
+      date: "JUL 8, 2012",
+      url: "https://archive.org/download/jomamasbluesmisc/kmud_120708_220000jomama2.mp3"
+    },
+    {
+      title: "JoMama's Blues",
+      note: "Live on KMUD.",
+      date: "JUL 15, 2012",
+      url: "https://archive.org/download/jomamasbluesmisc/kmud_120715_210000jomama1.mp3"
+    },
+    {
+      title: "JoMama's Blues (pt. 2)",
+      note: "Live on KMUD.",
+      date: "JUL 15, 2012",
+      url: "https://archive.org/download/jomamasbluesmisc/kmud_120715_220000jomama2.mp3"
+    },
+    {
+      title: "JoMama's Blues",
+      note: "Live on KMUD.",
+      date: "JUL 29, 2012",
+      url: "https://archive.org/download/jomamasbluesmisc/kmud_120729_210000jomama1.mp3"
+    },
+    {
+      title: "JoMama's Blues (pt. 2)",
+      note: "Live on KMUD.",
+      date: "JUL 29, 2012",
+      url: "https://archive.org/download/jomamasbluesmisc/kmud_120729_220000jomama2.mp3"
+    },
+    {
+      title: "JoMama's Blues (pt. 2)",
+      note: "Live on KMUD.",
+      date: "JUL 7, 2013",
+      url: "https://archive.org/download/jomamasbluesmisc/kmud_130707_220000jomama2.mp3"
+    },
+    {
+      title: "JoMama's Blues",
+      note: "Live on KMUD.",
+      date: "JUL 14, 2013",
+      url: "https://archive.org/download/jomamasbluesmisc/kmud_130714_210000jomama1.mp3"
+    },
+    {
+      title: "JoMama's Blues (pt. 2)",
+      note: "Live on KMUD.",
+      date: "JUL 14, 2013",
+      url: "https://archive.org/download/jomamasbluesmisc/kmud_130714_220000jomama2.mp3"
+    },
+    {
+      title: "JoMama's Blues",
+      note: "Live on KMUD.",
+      date: "JUL 21, 2013",
+      url: "https://archive.org/download/jomamasbluesmisc/kmud_130721_210000jomama1.mp3"
+    },
+    {
+      title: "JoMama's Blues (pt. 2)",
+      note: "Live on KMUD.",
+      date: "JUL 21, 2013",
+      url: "https://archive.org/download/jomamasbluesmisc/kmud_130721_220000jomama2.mp3"
+    },
+    {
+      title: "JoMama's Blues (pt. 2)",
+      note: "Live on KMUD.",
+      date: "JUL 28, 2013",
+      url: "https://archive.org/download/jomamasbluesmisc/kmud_130728_220000jomama2.mp3"
+    },
+    {
+      title: "JoMama's Blues",
+      note: "Live on KMUD.",
       date: "JAN 2018",
       url: "https://archive.org/download/jomamasblues1/2018-jan.m4a"
+    },
+    {
+      title: "JoMama's Blues",
+      note: "Live on KMUD.",
+      date: "MAR 22, 2020",
+      url: "https://archive.org/download/2020-march-8/2020-March-22.m4a"
     }
   ];
 
@@ -547,7 +718,37 @@
     });
   });
 
-  /* ---------- Password Gate ----------
+  /* ---------- Password eye toggle ---------- */
+  document.getElementById('gate-eye-btn').addEventListener('click', function() {
+    const input = document.getElementById('gate-input');
+    const isPassword = input.type === 'password';
+    input.type = isPassword ? 'text' : 'password';
+    document.getElementById('eye-icon').innerHTML = isPassword
+      ? `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`
+      : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+  });
+
+  /* ---------- Random show ---------- */
+  document.getElementById('random-btn').addEventListener('click', function() {
+    const withUrls = TRACKS.filter(t => t.url);
+    if (!withUrls.length) return;
+    const pick = withUrls[Math.floor(Math.random() * withUrls.length)];
+    // Stop any currently playing audio
+    document.querySelectorAll('audio').forEach(a => { a.pause(); a.currentTime = 0; });
+    // Find and play the matching audio element
+    const audios = document.querySelectorAll('audio');
+    let found = false;
+    audios.forEach(a => {
+      if (a.src === pick.url || a.getAttribute('src') === pick.url) {
+        a.play();
+        a.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        found = true;
+      }
+    });
+    const label = document.getElementById('random-now-playing');
+    label.textContent = found ? `▸ Now playing: ${pick.title} — ${pick.date}` : `▸ ${pick.title} — ${pick.date}`;
+    label.classList.add('visible');
+  });
      Client-side gate. Good for keeping out casual visitors and bots —
      not a substitute for real security. Anyone determined could view
      source. Fine for a private family/friends memorial page. */
