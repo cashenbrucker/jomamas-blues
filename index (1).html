@@ -121,6 +121,24 @@
   #gate button:hover { background: var(--rust-deep); }
   #gate button:focus-visible, #gate input:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
+  /* Eye button overrides the broad #gate button rule */
+  #gate .gate-eye {
+    margin-top: 0;
+    background: none !important;
+    border: 1px solid rgba(180, 140, 100, 0.35) !important;
+    color: rgba(242,232,213,0.3) !important;
+    font-size: inherit;
+    font-weight: normal;
+    letter-spacing: normal;
+    padding: 3px 5px;
+  }
+
+  #gate .gate-eye:hover {
+    background: none !important;
+    border-color: rgba(180,140,100,0.6) !important;
+    color: rgba(242,232,213,0.6) !important;
+  }
+
   .gate-input-wrap {
     position: relative;
     width: 100%;
@@ -150,6 +168,8 @@
 
   .gate-eye:hover { color: rgba(242,232,213,0.6); border-color: rgba(180,140,100,0.6); background: none !important; }
   .gate-eye svg { width: 15px; height: 15px; }
+
+  #gate-error {
     margin-top: 16px;
     font-size: 0.85rem;
     color: var(--rust);
@@ -482,7 +502,7 @@
         <line x1="32" y1="32" x2="10" y2="32" stroke="#C2542C" stroke-width="2" stroke-linecap="round"/>
         <circle cx="32" cy="32" r="3" fill="#C2542C"/>
       </svg>
-      <h1 class="display">JoMama's Blues</h1>
+      <h1 style="font-family:'Playfair Display',serif;">JoMama's Blues</h1>
       <p class="sub mono">a family archive</p>
       <form id="gate-form" autocomplete="off">
         <div class="gate-input-wrap">
@@ -512,7 +532,7 @@
             <line x1="32" y1="32" x2="10" y2="32" stroke="#C2542C" stroke-width="2" stroke-linecap="round"/>
             <circle cx="32" cy="32" r="3" fill="#C2542C"/>
           </svg>
-          <div class="brand-text display">JoMama's Blues<br><span style="font-size:0.65rem; font-family:'JetBrains Mono',monospace; letter-spacing:0.08em; opacity:0.55; font-style:normal;">KMUD · 1987–2022+</span></div>
+          <div class="brand-text" style="font-family:'Playfair Display',serif;">JoMama's Blues<br><span style="font-size:0.65rem; font-family:'JetBrains Mono',monospace; letter-spacing:0.08em; opacity:0.55;">KMUD · 1987–2022+</span></div>
         </div>
       </div>
       <nav class="tabs">
